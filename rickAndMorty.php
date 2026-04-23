@@ -1,9 +1,13 @@
 <?php
 // 1. Definimos qué personaje queremos buscar (por defecto el 1)
+$id = isset($_POST['id']) ? $_POST['id'] : 1;
 
 // 2. Llamada a la API (Sin keys, directo)
+$url = "https://rickandmortyapi.com/api/character/".$id;
+$respuesta = file_get_contents($url);
 
 // 3. Convertimos el JSON en un array de PHP
+$personajes = json_decode($respuesta, true);
 ?>
 
 <!DOCTYPE html>
@@ -21,15 +25,15 @@
     <h2>Busca un Personaje de Rick And Morty</h2>
     
     <form method="POST">
-        <input type="number" name="id" value="" min="1" max="826">
+        <input type="number" name="id" value="<?= $id?>" min="1" max="826">
         <button type="submit">Consultar API</button>
     </form>
 
     <div class="card">
-        <img src="" width="150">
-        <h3>Nombre: </h3>
-        <p>Especie: </p>
-        <p>Estado: </p>
+        <img src="<?= $personajes['image']?>" width="150">
+        <h3>Nombre: <?= $personajes['name']?></h3>
+        <p>Especie: <?= $personajes['species']?></p>
+        <p>Estado: <?= $personajes['status']?></p>
     </div>
 
 </body>
